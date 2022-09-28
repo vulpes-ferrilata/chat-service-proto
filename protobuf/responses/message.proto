@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option go_package = "github.com/vulpes-ferrilata/chat-service-proto/pb/responses";
+
+package responses;
+
+message Message {
+    string ID = 1;
+    string RoomID = 2;
+    string UserID = 3;
+    string Detail = 4;
+}
