@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "github.com/vulpes-ferrilata/chat-service-proto/pb/models";
+
+package models;
+
+import "protobuf/models/message.proto";
+
+message MessageList {
+    repeated Message Messages = 1;
+}

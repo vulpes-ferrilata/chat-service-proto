@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-option go_package = "github.com/vulpes-ferrilata/chat-service-proto/pb/requests";
-
-package requests;
-
-message FindMessagesByRoomID {
-    string RoomID = 1;
-}
