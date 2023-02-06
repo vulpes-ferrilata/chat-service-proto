@@ -8,8 +8,7 @@ package pb
 
 import (
 	context "context"
-	requests "github.com/vulpes-ferrilata/chat-service-proto/pb/requests"
-	responses "github.com/vulpes-ferrilata/chat-service-proto/pb/responses"
+	models "github.com/vulpes-ferrilata/chat-service-proto/pb/models"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -25,8 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatClient interface {
-	FindMessagesByRoomID(ctx context.Context, in *requests.FindMessagesByRoomID, opts ...grpc.CallOption) (*responses.MessageList, error)
-	CreateMessage(ctx context.Context, in *requests.CreateMessage, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	FindMessagesByRoomID(ctx context.Context, in *models.FindMessagesByRoomIDRequest, opts ...grpc.CallOption) (*models.MessageList, error)
+	CreateMessage(ctx context.Context, in *models.CreateMessageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type chatClient struct {
@@ -37,8 +36,8 @@ func NewChatClient(cc grpc.ClientConnInterface) ChatClient {
 	return &chatClient{cc}
 }
 
-func (c *chatClient) FindMessagesByRoomID(ctx context.Context, in *requests.FindMessagesByRoomID, opts ...grpc.CallOption) (*responses.MessageList, error) {
-	out := new(responses.MessageList)
+func (c *chatClient) FindMessagesByRoomID(ctx context.Context, in *models.FindMessagesByRoomIDRequest, opts ...grpc.CallOption) (*models.MessageList, error) {
+	out := new(models.MessageList)
 	err := c.cc.Invoke(ctx, "/pb.Chat/FindMessagesByRoomID", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -46,7 +45,7 @@ func (c *chatClient) FindMessagesByRoomID(ctx context.Context, in *requests.Find
 	return out, nil
 }
 
-func (c *chatClient) CreateMessage(ctx context.Context, in *requests.CreateMessage, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *chatClient) CreateMessage(ctx context.Context, in *models.CreateMessageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/pb.Chat/CreateMessage", in, out, opts...)
 	if err != nil {
@@ -59,8 +58,8 @@ func (c *chatClient) CreateMessage(ctx context.Context, in *requests.CreateMessa
 // All implementations must embed UnimplementedChatServer
 // for forward compatibility
 type ChatServer interface {
-	FindMessagesByRoomID(context.Context, *requests.FindMessagesByRoomID) (*responses.MessageList, error)
-	CreateMessage(context.Context, *requests.CreateMessage) (*emptypb.Empty, error)
+	FindMessagesByRoomID(context.Context, *models.FindMessagesByRoomIDRequest) (*models.MessageList, error)
+	CreateMessage(context.Context, *models.CreateMessageRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedChatServer()
 }
 
@@ -68,10 +67,10 @@ type ChatServer interface {
 type UnimplementedChatServer struct {
 }
 
-func (UnimplementedChatServer) FindMessagesByRoomID(context.Context, *requests.FindMessagesByRoomID) (*responses.MessageList, error) {
+func (UnimplementedChatServer) FindMessagesByRoomID(context.Context, *models.FindMessagesByRoomIDRequest) (*models.MessageList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindMessagesByRoomID not implemented")
 }
-func (UnimplementedChatServer) CreateMessage(context.Context, *requests.CreateMessage) (*emptypb.Empty, error) {
+func (UnimplementedChatServer) CreateMessage(context.Context, *models.CreateMessageRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMessage not implemented")
 }
 func (UnimplementedChatServer) mustEmbedUnimplementedChatServer() {}
@@ -88,7 +87,7 @@ func RegisterChatServer(s grpc.ServiceRegistrar, srv ChatServer) {
 }
 
 func _Chat_FindMessagesByRoomID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(requests.FindMessagesByRoomID)
+	in := new(models.FindMessagesByRoomIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -100,13 +99,13 @@ func _Chat_FindMessagesByRoomID_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/pb.Chat/FindMessagesByRoomID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServer).FindMessagesByRoomID(ctx, req.(*requests.FindMessagesByRoomID))
+		return srv.(ChatServer).FindMessagesByRoomID(ctx, req.(*models.FindMessagesByRoomIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Chat_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(requests.CreateMessage)
+	in := new(models.CreateMessageRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -118,7 +117,7 @@ func _Chat_CreateMessage_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/pb.Chat/CreateMessage",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServer).CreateMessage(ctx, req.(*requests.CreateMessage))
+		return srv.(ChatServer).CreateMessage(ctx, req.(*models.CreateMessageRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

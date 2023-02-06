@@ -4,14 +4,13 @@ option go_package = "github.com/vulpes-ferrilata/chat-service-proto/pb";
 
 package pb;
 
-import "protobuf/requests/find_messages_by_room_id.proto";
-import "protobuf/requests/create_message.proto";
-
-import "protobuf/responses/message_list.proto";
+import "protobuf/models/find_messages_by_room_id_request.proto";
+import "protobuf/models/create_message_request.proto";
+import "protobuf/models/message_list.proto";
 import "google/protobuf/empty.proto";
 
 service Chat {
-    rpc FindMessagesByRoomID(requests.FindMessagesByRoomID) returns (responses.MessageList) {}
+    rpc FindMessagesByRoomID(models.FindMessagesByRoomIDRequest) returns (models.MessageList) {}
 
-    rpc CreateMessage(requests.CreateMessage) returns (google.protobuf.Empty) {}
+    rpc CreateMessage(models.CreateMessageRequest) returns (google.protobuf.Empty) {}
 }
